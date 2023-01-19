@@ -22,6 +22,9 @@ class GameScene: SKScene  ,SKPhysicsContactDelegate{
     var gameStarted = false
     var originalPosition : CGPoint?
     
+    var score = 0
+    var scoreLabel = SKLabelNode()
+    
     enum ColliderType : UInt32{
         case Bird = 1
         case Box = 2
@@ -104,6 +107,14 @@ class GameScene: SKScene  ,SKPhysicsContactDelegate{
         box5.physicsBody?.mass = 0.4
         
         box5.physicsBody?.collisionBitMask = ColliderType.Bird.rawValue
+        
+        //Label oluşturmak
+        scoreLabel.fontName = "Helvetica"
+        scoreLabel.fontSize = 60
+        scoreLabel.text = "0"
+        scoreLabel.position = CGPoint(x: 0, y: self.frame.height / 4)
+        scoreLabel.zPosition = 2
+        self.addChild(scoreLabel)
         
     }
     
