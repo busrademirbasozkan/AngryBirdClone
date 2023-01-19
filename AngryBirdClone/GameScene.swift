@@ -20,6 +20,7 @@ class GameScene: SKScene {
     var box5 = SKSpriteNode()
     
     var gameStarted = false
+    var originalPosition : CGPoint?
     
     override func didMove(to view: SKView) {
         /* sıfırdan spritekitleri burada tanımlayabiliriz.
@@ -43,7 +44,7 @@ class GameScene: SKScene {
         bird.physicsBody?.affectedByGravity = false
         bird.physicsBody?.isDynamic = true
         bird.physicsBody?.mass = 0.15
-        
+        originalPosition = bird.position
         
         //box
         let boxTexture = SKTexture(imageNamed: "brick")
@@ -150,6 +151,29 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        if gameStarted == false {
+            if let touch = touches.first {
+                let touchLocation = touch.location(in: self)
+                let touchNodes = nodes(at: touchLocation)
+                
+                if touchNodes.isEmpty == false {
+                    for node in touchNodes {
+                        if let sprite = node as? SKSpriteNode{
+                            if sprite == bird {
+                                let dX = -(touchLocation.x - originalPosition!.x)
+                                let dY = -(touchLocation.y - originalPosition!.y)
+                                
+                                let impulse = CGVector(dx: dX, dy: dY)
+                                bird.physicsBody?.applyImpulse(impulse)
+                                bird.physicsBody?.affectedByGravity = true
+                                
+                                gameStarted = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
     }
     
