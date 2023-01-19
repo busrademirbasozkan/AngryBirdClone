@@ -57,7 +57,7 @@ class GameScene: SKScene  ,SKPhysicsContactDelegate{
         
         bird.physicsBody?.contactTestBitMask = ColliderType.Bird.rawValue
         bird.physicsBody?.categoryBitMask = ColliderType.Bird.rawValue
-        bird.physicsBody?.collisionBitMask = ColliderType.Bird.rawValue
+        bird.physicsBody?.collisionBitMask = ColliderType.Box.rawValue
         
         //box
         let boxTexture = SKTexture(imageNamed: "brick")
@@ -120,7 +120,8 @@ class GameScene: SKScene  ,SKPhysicsContactDelegate{
     
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.collisionBitMask == ColliderType.Bird.rawValue || contact.bodyB.collisionBitMask == ColliderType.Bird.rawValue {
-            
+            score += 1
+            scoreLabel.text = String(score)
         }
     }
     
@@ -229,7 +230,11 @@ class GameScene: SKScene  ,SKPhysicsContactDelegate{
                 bird.physicsBody?.angularVelocity = 0
                 bird.zPosition = 1
                 bird.position = originalPosition!
+                
                 gameStarted = false
+                
+                score = 0
+                scoreLabel.text = String(score)
                 
             }
         }
